@@ -1,11 +1,11 @@
 import spacy    
 from random import choice
-import re  # Import regular expressions for name extraction
+import re  
 
-# Load spaCy English model
+
 nlp = spacy.load("en_core_web_sm")
 
-# Define responses for different intents
+
 responses = {
     "greeting": [
         "Ahoy, matey!", "Shiver me timbers, it's good to see ye!", 
@@ -45,17 +45,17 @@ pirate_facts = [
 memory = {"name": None}
 
 
-# Function to pick a random response
+
 def get_response(intent):
     return choice(responses.get(intent, ["I'm not sure how to respond to that."]))
 
 
-# Function to detect user intent
+
 def detect_intent(text):
     text = text.lower()  # Convert input to lowercase for case-insensitive matching
     doc = nlp(text)
     
-    if "my name is" in text:  # Special case for remembering names
+    if "my name is" in text:  
         return "remember_name"
     if any(token.lemma_ in ["hello", "hi", "hey"] for token in doc):
         return "greeting"
@@ -77,17 +77,17 @@ def detect_intent(text):
         return "unknown"
 
 
-# Function to tell a pirate joke
+
 def tell_joke():
     return choice(pirate_jokes)
 
 
-# Function to tell a pirate fact
+
 def tell_fact():
     return choice(pirate_facts)
 
 
-# Function to perform pirate commands
+
 def pirate_commands(text):
     if "anchor" in text:
         return "The anchor be raised! We're ready to set sail!"
@@ -99,18 +99,18 @@ def pirate_commands(text):
         return "Arrr, I don't know that command!"
 
 
-# Function to update memory for personalization
+
 def update_memory(text):
     # Use a regular expression to extract the name after "my name is"
     match = re.search(r"my name is (.+)", text.lower())
     if match:
-        name = match.group(1).strip()  # Extract the name and remove extra spaces
-        memory["name"] = name  # Save the name in memory
+        name = match.group(1).strip()  
+        memory["name"] = name  
         return f"Ahoy, {name.capitalize()}! I'll remember yer name!"
     return "Arrr, I couldn't catch yer name, matey."
 
 
-# Chat loop function
+
 def chat():
     print("Hello! I'm Bob, your friendly pirate! How can I help today? Type 'quit' to exit.")
     while True:
@@ -119,10 +119,10 @@ def chat():
             print("Chatbot: Goodbye!")
             break
 
-        # Detect intent
+       
         intent = detect_intent(user_input)
 
-        # Handle intents
+     
         if intent == "remember_name":
             response = update_memory(user_input)
         elif intent == "greeting" and memory["name"]:
@@ -141,6 +141,6 @@ def chat():
         print(f"Bob: {response}")
 
 
-# Run the chatbot
+
 if __name__ == "__main__":
     chat()
